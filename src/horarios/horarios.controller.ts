@@ -12,18 +12,21 @@ import {
 import { HorariosService } from './horarios.service';
 import  { CrearHorarioDto } from './dto/crear-horario.dto';
 import  { ActualizarHorarioDto } from './dto/actualizar-horario.dto';
+import { Publico } from 'src/auth/decoradores/publico.decorator';
 
 @Controller('horarios')
 export class HorariosController {
   constructor(private readonly horariosService: HorariosService) {}
 
   /** GET /horarios */
+  @Publico()
   @Get()
   listar() {
     return this.horariosService.listar();
   }
 
   /** GET /horarios/2 */
+  @Publico()
   @Get(':id')
   async buscar(@Param('id') id: string) {
     const horario = await this.horariosService.buscar(Number(id));
@@ -34,6 +37,7 @@ export class HorariosController {
   }
 
   /** POST /horarios */
+  @Publico()
   @Post()
   @HttpCode(201)
   crear(@Body() dto: CrearHorarioDto) {
@@ -41,6 +45,7 @@ export class HorariosController {
   }
 
   /** PATCH /horarios/2 */
+  @Publico()
   @Patch(':id')
   async actualizar(@Param('id') id: string, @Body() dto: ActualizarHorarioDto) {
     const horario = await this.horariosService.actualizar(Number(id), dto);
@@ -51,6 +56,7 @@ export class HorariosController {
   }
 
   /** DELETE /horarios/2 */
+  @Publico()
   @Delete(':id')
   async eliminar(@Param('id') id: string) {
     const horario = await this.horariosService.eliminar(Number(id));

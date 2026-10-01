@@ -6,6 +6,9 @@ import { InscripcionesModule } from './inscripciones/inscripciones.module';
 import { MiembrosModule } from './miembros/miembros.module';
 import { HorariosModule } from './horarios/horarios.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { PeticionIdMiddleware } from './comun/middleware/peticion-id.middleware';
+import { MiddlewareConsumer, NestModule } from '@nestjs/common';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,8 +17,15 @@ import { PrismaModule } from './prisma/prisma.module';
     MiembrosModule,
     HorariosModule,
     PrismaModule,
+    AuthModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(PeticionIdMiddleware)
+      .forRoutes('*');
+  }
+}

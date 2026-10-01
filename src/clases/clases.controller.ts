@@ -12,18 +12,21 @@ import {
 import { ClasesService } from './clases.service';
 import  { CrearClaseDto } from './dto/crear-clase.dto';
 import  { ActualizarClaseDto } from './dto/actualizar-clase.dto';
+import { Publico } from 'src/auth/decoradores/publico.decorator';
 
 @Controller('clases')
 export class ClasesController {
   constructor(private readonly clasesService: ClasesService) {}
 
   /** GET /clases */
+  @Publico()
   @Get()
   listar() {
     return this.clasesService.listar();
   }
 
   /** GET /clases/2 */
+  @Publico()
   @Get(':id')
   async buscar(@Param('id') id: string) {
     const clase = await this.clasesService.buscar(Number(id));
@@ -34,6 +37,7 @@ export class ClasesController {
   }
 
   /** POST /clases */
+  @Publico()
   @Post()
   @HttpCode(201)
   crear(@Body() dto: CrearClaseDto) {
@@ -41,6 +45,7 @@ export class ClasesController {
   }
 
   /** PATCH /clases/2 */
+  @Publico()
   @Patch(':id')
   async actualizar(@Param('id') id: string, @Body() dto: ActualizarClaseDto) {
     const clase = await this.clasesService.actualizar(Number(id), dto);
@@ -51,6 +56,7 @@ export class ClasesController {
   }
 
   /** DELETE /clases/2 */
+  @Publico()
   @Delete(':id')
   async eliminar(@Param('id') id: string) {
     const clase = await this.clasesService.eliminar(Number(id));
